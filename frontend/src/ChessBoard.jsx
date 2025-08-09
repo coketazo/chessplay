@@ -10,7 +10,7 @@ function ChessBoard() {
   // 보드가 보이는 방향
   const [boardOrientation, setBoardOrientation] = useState("white");
   // 이동 가능한 타일 하이라이트
-  const [moveSquares, setMoveSquares] = useState({});
+  const [movableSquares, setMovableSquares] = useState({});
 
   // 3. useEffect를 사용해 'game' state가 변할 때마다 실행될 코드를 작성합니다.
   useEffect(() => {
@@ -40,6 +40,7 @@ function ChessBoard() {
     gameCopy.loadPgn(game.pgn());
     const result = gameCopy.move(move);
     setGame(gameCopy);
+    setMovableSquares({});
     return result;
   }
 
@@ -74,7 +75,7 @@ function ChessBoard() {
 
     // 해당 기물이 움직일 수 없는 경우, 하이라이트를 지웁니다.
     if (moves.length === 0) {
-      setMoveSquares({});
+      setMovableSquares({});
       return;
     }
 
@@ -87,7 +88,7 @@ function ChessBoard() {
         borderRadius: "50%",
       };
     });
-    setMoveSquares(newMoveSquares); // state를 업데이트해서 하이라이트를 표시합니다.
+    setMovableSquares(newMoveSquares); // state를 업데이트해서 하이라이트를 표시합니다.
   }
 
   return (
@@ -97,7 +98,7 @@ function ChessBoard() {
         onPieceDrop={onDrop}
         boardOrientation={boardOrientation}
         onSquareClick={onSquareClick}
-        customSquareStyles={moveSquares}
+        customSquareStyles={movableSquares}
       />
       <h3>{status}</h3>
       <button className="reset-button" onClick={resetGame}>
